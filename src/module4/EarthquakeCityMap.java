@@ -80,7 +80,7 @@ public class EarthquakeCityMap extends PApplet {
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -118,6 +118,7 @@ public class EarthquakeCityMap extends PApplet {
 	    //           for their geometric properties
 	    map.addMarkers(quakeMarkers);
 	    map.addMarkers(cityMarkers);
+	   // map.addMarkers(countryMarkers);  								//BY ME
 	    
 	}  // End setup
 	
@@ -164,10 +165,22 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
+		for(Marker country : countryMarkers)
+		{
+			if(isInCountry(earthquake,country))
+			{
+				return true;
+			}
+			
+
+		}
+		
 		// TODO: Implement this method using the helper method isInCountry
 		
 		// not inside any country
-		return false;
+		
+			return false;
+		
 	}
 	
 	// prints countries with number of earthquakes
@@ -178,7 +191,26 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
+		
 		// TODO: Implement this method
+		int oceanquake = quakeMarkers.size(); 
+		for(Marker country : countryMarkers)
+		{
+			int landquake=0;
+			for(Marker quake : quakeMarkers)
+			{
+				if(quake.getProperty("country")!=null && quake.getProperty("country").equals(country.getProperty("name")))
+				{
+					landquake += 1; 
+				
+				}
+			}
+			oceanquake -= landquake;
+			if (landquake != 0)
+				System.out.println((String)country.getProperty("name") + ": " + landquake);
+		}
+		
+		System.out.println("OCEAN QUAKES: " + oceanquake);
 	}
 	
 	
